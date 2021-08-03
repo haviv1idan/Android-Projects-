@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_color"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview_calculator"
+        android:text="Calculator"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/textview_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="Exercise"
+        android:textSize="40dp"
+        android:gravity="bottom|end"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color"
+        />
+
+    <TextView
+        android:id="@+id/textview_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Answer"
+        android:textSize="20dp"
+        android:gravity="bottom|end"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color"
+        />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <TableRow
+            android:layout_marginLeft="25dp">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_baseline_backspace"
+                android:background="@drawable/rounded_button"
+                android:onClick="onClickBackspace"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="AC"
+                android:onClick="onClickAc"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="%"
+                android:onClick="onClickOperator"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="X"
+                android:onClick="onClickOperator"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="25dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="7"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="8"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="9"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="/"
+                android:onClick="onClickOperator"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="25dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="4"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="5"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="6"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="-"
+                android:onClick="onClickOperator"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="25dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="1"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="2"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="3"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="+"
+                android:onClick="onClickOperator"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginLeft="25dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="+/-"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="0"
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="."
+                android:onClick="onClickDigit"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                style="@style/FloatingActionButton"
+                android:text="="
+                android:onClick="onClickEqual"
+                />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
