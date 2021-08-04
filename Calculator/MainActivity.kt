@@ -10,11 +10,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var textviewExercise: TextView
     private lateinit var textviewAnswer: TextView
-    private var isFirstOperatorClicked: Boolean = false
+    private var isFirstOperatorClicked = false
+    private var isClickedPlusMinusButton = false
 
     // operators functions
     val multiply = {n1: Double, n2: Double -> n1 * n2}
     val division = {n1: Double, n2: Double -> n1 / n2}
+
+    private val operators = listOf('+','-','X','/')
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +38,18 @@ class MainActivity : AppCompatActivity() {
         // we will create Mutable list for the expression
         val lst: MutableList<String> = mutableListOf()
 
-        val operators = listOf('+','-','X','/')
         var startNumPointer = 0
         var num = ""
 
         // run on exp string
         for ((index, value) in exp.withIndex()) {
-            // if found operator
-            if (value in operators) {
+
+            // if the first number is negative
+            if (index == 0 && value == '-')
+                continue
+                // if found operator
+            else if (value in operators && exp[index - 1] != '(') {
+
                 // run all chars from last startNunPointer until index - 1
                 for (i in startNumPointer until index) {
                     num += exp[i].toString()
@@ -53,9 +60,14 @@ class MainActivity : AppCompatActivity() {
                 lst.add(value.toString())
                 // increase startNumPointer to number after operator
                 startNumPointer = index + 1
+
+                // reset num
                 num = ""
+
+            } else if (value == '(')
+                    startNumPointer += 1
             }
-        }
+        // end of for loop
         // this loop is for last number
         for (i in startNumPointer until exp.length) {
             num += exp[i].toString()
@@ -185,6 +197,7 @@ class MainActivity : AppCompatActivity() {
         else
             textviewAnswer.text = result.toString()
 
+        println("result: $result")
         return result
     }
 
@@ -195,8 +208,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickOperator(view: View) {
-        textviewExercise.append((view as Button).text)
-        isFirstOperatorClicked = true
+        if (textviewExercise.text != "" && textviewExercise.text.last() !in operators) {
+            textviewExercise.append((view as Button).text)
+            isFirstOperatorClicked = true
+        }
     }
 
     fun onClickEqual(view: View){
@@ -237,5 +252,68 @@ class MainActivity : AppCompatActivity() {
             println(txt.toString())
             textviewExercise.text = txt
         }
+    }
+
+    private fun addMinus(exp: String): String {
+        /*
+        The function change the last number from positive to negative
+        */
+        var newExp = ""
+        var lastOperatorIndex = 0
+        for (i in exp.length - 1 downTo 0) {
+            if (exp[i] in operators) {
+                lastOperatorIndex = i
+                break
+            }
+        }
+        if (lastOperatorIndex == 0) {
+            newExp = "-"
+            for (i in exp)
+                newExp += i.toString()
+        } else {
+            for (i in 0 until lastOperatorIndex+1)
+                newExp += exp[i].toString()
+            newExp += "(-"
+            for (i in lastOperatorIndex+1 until exp.length)
+                newExp += exp[i].toString()
+        }
+        println("newExp: $newExp")
+        return newExp
+    }
+
+    fun onClickPlusMinus(view: View) {
+        var txt = textviewExercise.text
+        var newExp = ""
+
+        // start searching from end operator
+        for (i in txt.length-1 downTo 0){
+
+            // if the operator is '-' and before him have '('.
+            // we need to clear them
+            if (txt[i] == '-' && txt[i-1] == '(') {
+
+                // this for clear the '(-' from txt and put the num exp in newExp
+                for (i in txt.length - 1 downTo 0)
+
+                    if (txt[i] == '(') {
+
+                        for (j in 0 until i)
+                            newExp += txt[j].toString()
+                        for (j in i + 2 until txt.length)
+                            newExp += txt[j].toString()
+                        break
+                    }
+                textviewExercise.text = newExp
+                solve(textviewExercise.text.toString())
+                return
+            }
+            // else if has only operator we need to add minus
+            else if (txt[i] in operators){
+                textviewExercise.text = addMinus(txt.toString())
+                solve(textviewExercise.text.toString())
+                return
+            }
+        }
+        textviewExercise.text = addMinus(txt.toString())
     }
 }
