@@ -15,6 +15,7 @@
         android:text="Calculator"
         android:textSize="25dp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:gravity="center" />
 
     <TextView
@@ -41,15 +42,13 @@
         android:textColorHint="@color/text_color"
         />
 
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom">
 
-        <TableRow
-            android:layout_marginLeft="25dp">
+        <TableRow>
 
             <ImageButton
                 android:layout_width="80dp"
@@ -59,138 +58,163 @@
                 android:background="@drawable/rounded_button"
                 android:onClick="onClickBackspace"
                 />
+        </TableRow>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <TableRow>
+
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="AC"
                 android:onClick="onClickAc"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
+                style="@style/FloatingActionButton"
+                android:text="()"
+                android:background="@drawable/rounded_button"
+                />
+
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="%"
                 android:onClick="onClickOperator"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="X"
                 android:onClick="onClickOperator"
+                android:background="@drawable/rounded_button"
                 />
 
         </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="25dp">
+        <TableRow>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="7"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="8"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="9"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="/"
                 android:onClick="onClickOperator"
+                android:background="@drawable/rounded_button"
                 />
 
         </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="25dp">
+        <TableRow>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="4"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="5"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="6"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="-"
                 android:onClick="onClickOperator"
+                android:background="@drawable/rounded_button"
                 />
 
         </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="25dp">
+        <TableRow>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="1"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="2"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="3"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="+"
                 android:onClick="onClickOperator"
+                android:background="@drawable/rounded_button"
                 />
 
         </TableRow>
 
-        <TableRow
-            android:layout_marginLeft="25dp">
+        <TableRow>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="+/-"
+                android:onClick="onClickPlusMinus"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="0"
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="."
                 android:onClick="onClickDigit"
+                android:background="@drawable/rounded_button"
                 />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <Button
                 style="@style/FloatingActionButton"
                 android:text="="
                 android:onClick="onClickEqual"
+                android:background="@drawable/rounded_button"
                 />
 
         </TableRow>
