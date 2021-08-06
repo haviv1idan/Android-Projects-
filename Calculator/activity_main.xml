@@ -41,49 +41,53 @@
         android:textColor="@color/text_color"
         android:textColorHint="@color/text_color"
         />
-
+    
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom">
-
+        
         <TableRow>
 
-            <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/ic_baseline_backspace"
-                android:background="@drawable/rounded_button"
+            <Button
+                style="@style/FirstRowButtons"
+                android:background="@drawable/ic_baseline_history"
+                />
+            <Space/>
+            <Space/>
+            <Button
+                style="@style/FirstRowButtons"
+                android:background="@drawable/ic_baseline_backspace"
                 android:onClick="onClickBackspace"
                 />
+
         </TableRow>
 
         <TableRow>
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="AC"
                 android:onClick="onClickAc"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="()"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="%"
                 android:onClick="onClickOperator"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="X"
                 android:onClick="onClickOperator"
                 android:background="@drawable/rounded_button"
@@ -94,28 +98,28 @@
         <TableRow>
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="7"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="8"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="9"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="/"
                 android:onClick="onClickOperator"
                 android:background="@drawable/rounded_button"
@@ -126,28 +130,28 @@
         <TableRow>
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="4"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="5"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="6"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="-"
                 android:onClick="onClickOperator"
                 android:background="@drawable/rounded_button"
@@ -158,28 +162,28 @@
         <TableRow>
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="1"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="2"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="3"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="+"
                 android:onClick="onClickOperator"
                 android:background="@drawable/rounded_button"
@@ -190,28 +194,28 @@
         <TableRow>
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="+/-"
                 android:onClick="onClickPlusMinus"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="0"
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="."
                 android:onClick="onClickDigit"
                 android:background="@drawable/rounded_button"
                 />
 
             <Button
-                style="@style/FloatingActionButton"
+                style="@style/TableTextButtons"
                 android:text="="
                 android:onClick="onClickEqual"
                 android:background="@drawable/rounded_button"
