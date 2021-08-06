@@ -5,6 +5,7 @@
 # ***What speicel in my calculator?***
 > In this project i created a calculator that calculate expressions by himself with my algorithm.
 > In MainActivity you can see the full algorithm.
+> Here is a taste of it 
 
     private fun solve(exp: String): Double{
 
