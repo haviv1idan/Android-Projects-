@@ -11,13 +11,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textviewExercise: TextView
     private lateinit var textviewAnswer: TextView
     private var isFirstOperatorClicked = false
-    private var isClickedPlusMinusButton = false
 
     // operators functions
     val multiply = {n1: Double, n2: Double -> n1 * n2}
     val division = {n1: Double, n2: Double -> n1 / n2}
 
-    private val operators = listOf('+','-','X','/')
+    private val operators = listOf('+','-','X','/','%')
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +26,11 @@ class MainActivity : AppCompatActivity() {
         textviewAnswer = findViewById(R.id.textview_answer)
     }
 
+    /*
+        status:
+            organize a string with digits and operators
+            need to add: x^y , () , %
+     */
     private fun organizeExpression(exp: String): MutableList<String>{
         /*
         The function gets an expression string
@@ -77,7 +81,13 @@ class MainActivity : AppCompatActivity() {
         return lst
     }
 
+
+    // finished
     private fun calculateSequence(sequence: MutableList<String>): Double {
+        /*
+        The function calculate a sequence of X and /.
+        The function returns the result of sequence
+         */
 
         var res: Double
         if (sequence.size == 3)
@@ -98,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         return res
     }
 
+    // finished
     private fun solveMultiplyAndDivision(organizedExp: MutableList<String>): MutableList<String> {
         /*
         The function goes over organizedExp and looking for X and /
@@ -156,6 +167,7 @@ class MainActivity : AppCompatActivity() {
         return newExp
     }
 
+    // finished
     private fun solveAddAndSub(exp: MutableList<String>): Double {
 
         var i = 0
@@ -177,6 +189,10 @@ class MainActivity : AppCompatActivity() {
         return res
     }
 
+    /*
+    status:
+        * need to add x^y , () , %
+    */
     private fun solve(exp: String): Double{
 
         println("first Exp: $exp")
@@ -201,19 +217,24 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+    // finished
     fun onClickDigit(view: View) {
         textviewExercise.append((view as Button).text)
+        // start solve when have at least one operator
         if (isFirstOperatorClicked)
             solve(textviewExercise.text.toString())
     }
 
+    // finished
     fun onClickOperator(view: View) {
+        // cannot append operator as first or last
         if (textviewExercise.text != "" && textviewExercise.text.last() !in operators) {
             textviewExercise.append((view as Button).text)
             isFirstOperatorClicked = true
         }
     }
 
+    // status: need add: when clicked add exercise and answer to history list
     fun onClickEqual(view: View){
         // Read the Expression
         val txt = textviewExercise.text.toString()
@@ -229,31 +250,39 @@ class MainActivity : AppCompatActivity() {
         textviewAnswer.text = ""
     }
 
+    // finished
     fun onClickAc(view: View){
         textviewExercise.text = ""
         textviewAnswer.text = ""
         isFirstOperatorClicked = false
     }
 
+    // finished
     fun onClickBackspace(view: View){
         // get the expression
         var txt = textviewExercise.text
+        println("txt: $txt")
 
-        if (txt != "") {
-            // convert expression to MutableList
-            val txt2 = txt.toMutableList()
-            // remove last element
-            txt2.removeLast()
-            // convert back Mutable list to String
-            txt = ""
-            for (i in txt2) {
-                txt = txt.toString() + i.toString()
+        when {
+            txt.isEmpty() -> return
+            txt.length == 1 -> textviewExercise.text = ""
+            else -> {
+                // convert expression to MutableList
+                val txt2 = txt.toMutableList()
+                // remove last element
+                txt2.removeLast()
+                // convert back Mutable list to String
+                txt = ""
+                for (i in txt2) {
+                    txt = txt.toString() + i.toString()
+                }
+                println(txt.toString())
+                textviewExercise.text = txt
             }
-            println(txt.toString())
-            textviewExercise.text = txt
         }
     }
 
+    // finished
     private fun addMinus(exp: String): String {
         /*
         The function change the last number from positive to negative
@@ -281,6 +310,7 @@ class MainActivity : AppCompatActivity() {
         return newExp
     }
 
+    // finished
     fun onClickPlusMinus(view: View) {
         var txt = textviewExercise.text
         var newExp = ""
