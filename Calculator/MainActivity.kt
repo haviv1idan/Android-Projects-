@@ -1,16 +1,23 @@
 package com.example.calculatorv2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import net.objecthunter.exp4j.ExpressionBuilder
+
+// this variable use for include all expressions and theirs results
+val historyList = ArrayList<Model>()
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var textviewExercise: TextView
     private lateinit var textviewAnswer: TextView
     private var isFirstOperatorClicked = false
+
 
     // operators functions
     val multiply = {n1: Double, n2: Double -> n1 * n2}
@@ -25,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         textviewExercise = findViewById(R.id.textview_exercise)
         textviewAnswer = findViewById(R.id.textview_answer)
     }
-
     /*
         status:
             organize a string with digits and operators
@@ -197,6 +203,7 @@ class MainActivity : AppCompatActivity() {
 
         println("first Exp: $exp")
 
+
         // first of all we need to organize the number and operators
         val organizedExp: MutableList<String> = organizeExpression(exp)
         println("organized Exp: $organizedExp")
@@ -238,15 +245,15 @@ class MainActivity : AppCompatActivity() {
     fun onClickEqual(view: View){
         // Read the Expression
         val txt = textviewExercise.text.toString()
-        // val txt = "5X5+5" V
-        // val txt = "5+5X5" V
-        // val txt = "5X5X5" V
-        // val txt = "5+5X5X5-6X3X2+8/4" V
         val result = solve(txt)
-        if (result.toString().substring(result.toString().length-2,result.toString().length) == ".0")
+        if (result.toString().substring(result.toString().length-2,result.toString().length) == ".0") {
+            historyList.add(Model(textviewExercise.text.toString(), "= ${result.toInt()}"))
             textviewExercise.text = result.toInt().toString()
-        else
+        }
+        else {
+            historyList.add(Model(textviewExercise.text.toString(), "= $result"))
             textviewExercise.text = result.toString()
+        }
         textviewAnswer.text = ""
     }
 
@@ -345,5 +352,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
         textviewExercise.text = addMinus(txt.toString())
+    }
+
+    fun onClickHistory(view: View){
+        var intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Bracket = ()
+    fun onClickBracket(view: View) {
+        var txt = textviewExercise.text.toString()
+        if (txt.indexOf('(') == -1) {
+            if (txt.last() == 'X')
+                txt += '('
+            else
+                txt += "X("
+        } else
+            for (i in txt.length - 1 downTo 0) {
+                if (txt[i] == '(') {
+                    txt += ')'
+                    break
+                }
+            }
+        textviewExercise.text = txt
+    }
+
+    fun onClickPercent(view: View){
+
     }
 }
