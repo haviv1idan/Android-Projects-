@@ -1,0 +1,32 @@
+package com.example.learningapplication
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+
+class MainActivity : AppCompatActivity() {
+
+    private val CHANNEL_ID = "channel_id_example_01"
+    private var notificationId = 100
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        sendNotification()
+    }
+
+    private fun sendNotification() {
+        // create notification builder
+        val nBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+            .setContentTitle("Idan's Notification")
+            .setContentText("Hi, This is my notification")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(notificationId, nBuilder.build())
+        }
+    }
+}
