@@ -7,11 +7,23 @@ import android.os.Bundle
 import android.os.BatteryManager
 import android.view.MotionEvent
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import kotlinx.coroutines.*
+import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
-    
+
     private lateinit var tv1: TextView
     private lateinit var tv2: TextView
+
+    private val CHANNEL_ID = "channel_id_example_01"
+    private var notificationId = 100
+
+    private var lastChargePlug: Int? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +33,21 @@ class MainActivity : AppCompatActivity() {
         tv2 = findViewById(R.id.textview2)
 
     }
+
+
+    private fun sendNotification(msg: String) {
+        // create notification builder
+        val nBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+            .setContentTitle("Idan's Notification")
+            .setContentText("Hi, $msg")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(notificationId, nBuilder.build())
+        }
+    }
+
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         println("on touch event")
@@ -41,9 +68,15 @@ class MainActivity : AppCompatActivity() {
         when {
             usbCharge -> tv2.text = "Mobile is charging on USB"
             acCharge -> tv2.text = "Mobile is charging on AC"
-            else -> tv2.text = ""
+            else -> tv2.text = "non plugged"
         }
+
+        if (chargePlug != lastChargePlug)
+            sendNotification(tv2.text.toString())
+
+        lastChargePlug = chargePlug
 
         return super.onTouchEvent(event)
     }
+
 }
