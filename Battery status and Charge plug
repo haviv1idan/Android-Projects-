@@ -1,0 +1,49 @@
+package com.example.learningapplication
+
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.BatteryManager
+import android.view.MotionEvent
+import android.widget.TextView
+
+class MainActivity : AppCompatActivity() {
+    
+    private lateinit var tv1: TextView
+    private lateinit var tv2: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        tv1 = findViewById(R.id.textview1)
+        tv2 = findViewById(R.id.textview2)
+
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        println("on touch event")
+
+        // gets battery status
+        var intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        var batteryStatus = registerReceiver(null, intentFilter)
+
+        // Are we charging / charged? Full or charging
+        var status = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+
+        tv1.text = status.toString() + "%"
+
+        val chargePlug = batteryStatus?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+        val usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB
+        val acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC
+
+        when {
+            usbCharge -> tv2.text = "Mobile is charging on USB"
+            acCharge -> tv2.text = "Mobile is charging on AC"
+            else -> tv2.text = ""
+        }
+
+        return super.onTouchEvent(event)
+    }
+}
