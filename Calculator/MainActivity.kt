@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
     // operators functions
     val multiply = {n1: Double, n2: Double -> n1 * n2}
     val division = {n1: Double, n2: Double -> n1 / n2}
-
+    /*
+    1111111
+    */
     private val operators = listOf('+','-','X','/','%')
 
     override fun onCreate(savedInstanceState: Bundle?) {
