@@ -1,0 +1,178 @@
+package com.example.jetpackcompose
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+//import kotlinx.coroutines.launch
+
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+    NavHost(navController= navController, startDestination = Screen.MainScreen.route){
+        composable(route= Screen.MainScreen.route){
+            ConstraintLayoutLogin(navController = navController)
+        }
+        composable(route= Screen.RegisterScreen.route) {
+            RegisterScreen(navController = navController)
+        }
+    }
+}
+
+@Composable
+fun RegisterScreen(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize().background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                navController.navigate(Screen.MainScreen.route)
+            }
+        ) {
+            Text(text = "To Login")
+        }
+    }
+}
+
+@Composable
+fun ConstraintLayoutLogin(navController: NavController) {
+
+    val scaffoldState = rememberScaffoldState()
+    //val scope = rememberCoroutineScope()
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState
+    ) {
+
+        val constraints = ConstraintSet {
+            val loginTextView = createRefFor("loginTextView")
+            val emailTextField = createRefFor("emailTextField")
+            val passwordTextField = createRefFor("passwordTextField")
+            val loginButton = createRefFor("btnLogin")
+            val bottomText = createRefFor("bottomText")
+            val registerLinkText = createRefFor("registerLinkText")
+
+            val upperGuideline = createGuidelineFromTop(0.3f)
+            val bottomGuideline = createGuidelineFromTop(0.8f)
+
+            constrain(loginTextView) {
+                top.linkTo(upperGuideline)
+                start.linkTo(parent.start, margin = 50.dp)
+            }
+            constrain(emailTextField) {
+                top.linkTo(loginTextView.bottom, margin = 25.dp)
+                start.linkTo(parent.start, margin = 50.dp)
+                end.linkTo(parent.end, margin = 60.dp)
+            }
+            constrain(passwordTextField) {
+                top.linkTo(emailTextField.bottom, margin = 25.dp)
+                start.linkTo(parent.start, margin = 50.dp)
+                end.linkTo(parent.end, margin = 60.dp)
+            }
+            constrain(loginButton) {
+                top.linkTo(passwordTextField.bottom, margin = 25.dp)
+                end.linkTo(parent.end, margin = 60.dp)
+            }
+            constrain(bottomText) {
+                top.linkTo(bottomGuideline)
+            }
+            constrain(registerLinkText) {
+                top.linkTo(bottomGuideline)
+            }
+            createHorizontalChain(bottomText, registerLinkText, chainStyle = ChainStyle.Packed)
+        }
+        ConstraintLayout(
+            constraintSet = constraints,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            var emailTextFieldState by remember {
+                mutableStateOf("")
+            }
+            var passwordTextFieldState by remember {
+                mutableStateOf("")
+            }
+            Text(
+                modifier = Modifier.layoutId("loginTextView"),
+                text = "Login",
+                color = Color.Red,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            OutlinedTextField(
+                modifier = Modifier.layoutId("emailTextField"),
+                value = emailTextFieldState,
+                label = {
+                    Text("Email")
+                },
+                onValueChange = {
+                    emailTextFieldState = it
+                },
+                singleLine = true
+            )
+            OutlinedTextField(
+                modifier = Modifier.layoutId("passwordTextField"),
+                value = passwordTextFieldState,
+                label = {
+                    Text("Password")
+                },
+                onValueChange = {
+                    passwordTextFieldState = it
+                },
+                singleLine = true
+            )
+            Button(
+                modifier = Modifier.layoutId("btnLogin"),
+                onClick = {
+                    /*
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar("Hi, This is snackBar")
+                    }*/
+                    getTextFieldsValues(emailTextFieldState, passwordTextFieldState)
+                }
+            ) {
+                Text(text = "Login")
+            }
+            Text(
+                modifier = Modifier.layoutId("bottomText"),
+                text = "Don't have an account? "
+            )
+            Text(
+                modifier = Modifier
+                    .layoutId("registerLinkText")
+                    .clickable {
+                        navController.navigate(Screen.RegisterScreen.route)
+                        /*
+                        scope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("Hi, This is register")
+                        }*/
+                    },
+                text = " Sign up"
+            )
+        }
+    }
+}
+
+fun getTextFieldsValues(email: String, password: String){
+    println("email: $email, password: $password")
+
+}
