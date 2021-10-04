@@ -1,17 +1,20 @@
 package com.example.jetpackcompose
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
@@ -21,7 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-//import kotlinx.coroutines.launch
+import kotlinx.coroutines.launch
 
 @Composable
 fun Navigation() {
@@ -31,24 +34,7 @@ fun Navigation() {
             ConstraintLayoutLogin(navController = navController)
         }
         composable(route= Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController)
-        }
-    }
-}
-
-@Composable
-fun RegisterScreen(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize().background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = {
-                navController.navigate(Screen.MainScreen.route)
-            }
-        ) {
-            Text(text = "To Login")
+            ConstraintLayoutRegister(navController = navController)
         }
     }
 }
@@ -57,7 +43,7 @@ fun RegisterScreen(navController: NavController) {
 fun ConstraintLayoutLogin(navController: NavController) {
 
     val scaffoldState = rememberScaffoldState()
-    //val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -77,21 +63,15 @@ fun ConstraintLayoutLogin(navController: NavController) {
 
             constrain(loginTextView) {
                 top.linkTo(upperGuideline)
-                start.linkTo(parent.start, margin = 50.dp)
             }
             constrain(emailTextField) {
                 top.linkTo(loginTextView.bottom, margin = 25.dp)
-                start.linkTo(parent.start, margin = 50.dp)
-                end.linkTo(parent.end, margin = 60.dp)
             }
             constrain(passwordTextField) {
                 top.linkTo(emailTextField.bottom, margin = 25.dp)
-                start.linkTo(parent.start, margin = 50.dp)
-                end.linkTo(parent.end, margin = 60.dp)
             }
             constrain(loginButton) {
                 top.linkTo(passwordTextField.bottom, margin = 25.dp)
-                end.linkTo(parent.end, margin = 60.dp)
             }
             constrain(bottomText) {
                 top.linkTo(bottomGuideline)
@@ -99,18 +79,25 @@ fun ConstraintLayoutLogin(navController: NavController) {
             constrain(registerLinkText) {
                 top.linkTo(bottomGuideline)
             }
+            createHorizontalChain(loginTextView)
+            createHorizontalChain(emailTextField)
+            createHorizontalChain(passwordTextField)
+            createHorizontalChain(loginButton)
             createHorizontalChain(bottomText, registerLinkText, chainStyle = ChainStyle.Packed)
         }
         ConstraintLayout(
             constraintSet = constraints,
             modifier = Modifier.fillMaxSize()
         ) {
-            var emailTextFieldState by remember {
-                mutableStateOf("")
-            }
-            var passwordTextFieldState by remember {
-                mutableStateOf("")
-            }
+            var emailTextFieldState by remember { mutableStateOf("") }
+            var passwordTextFieldState by remember { mutableStateOf("") }
+            var passwordVisibility by remember { mutableStateOf(false) }
+
+            val passwordIcon = if (passwordVisibility)
+                painterResource(id = R.drawable.design_ic_visibility)
+            else
+                painterResource(id = R.drawable.design_ic_visibility_off)
+
             Text(
                 modifier = Modifier.layoutId("loginTextView"),
                 text = "Login",
@@ -138,16 +125,31 @@ fun ConstraintLayoutLogin(navController: NavController) {
                 onValueChange = {
                     passwordTextFieldState = it
                 },
-                singleLine = true
+                singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = {
+                        passwordVisibility = !passwordVisibility
+                    }) {
+                        Icon(
+                            painter = passwordIcon,
+                            contentDescription = "visibility Icon"
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = if (passwordVisibility) VisualTransformation.None
+                else PasswordVisualTransformation()
+
             )
             Button(
                 modifier = Modifier.layoutId("btnLogin"),
                 onClick = {
-                    /*
                     scope.launch {
                         scaffoldState.snackbarHostState.showSnackbar("Hi, This is snackBar")
-                    }*/
-                    getTextFieldsValues(emailTextFieldState, passwordTextFieldState)
+                    }
+                    loginPageValues(emailTextFieldState, passwordTextFieldState)
                 }
             ) {
                 Text(text = "Login")
@@ -161,10 +163,9 @@ fun ConstraintLayoutLogin(navController: NavController) {
                     .layoutId("registerLinkText")
                     .clickable {
                         navController.navigate(Screen.RegisterScreen.route)
-                        /*
                         scope.launch {
                             scaffoldState.snackbarHostState.showSnackbar("Hi, This is register")
-                        }*/
+                        }
                     },
                 text = " Sign up"
             )
@@ -172,7 +173,206 @@ fun ConstraintLayoutLogin(navController: NavController) {
     }
 }
 
-fun getTextFieldsValues(email: String, password: String){
-    println("email: $email, password: $password")
+@Composable
+fun ConstraintLayoutRegister(navController: NavController) {
 
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState
+    ) {
+        val constraints = ConstraintSet{
+            val registerTextView = createRefFor("registerTextView")
+            val fullNameTextField = createRefFor("fullNameTextField")
+            val emailTextField = createRefFor("emailTextField")
+            val passwordTextField = createRefFor("passwordTextField")
+            val confirmPasswordTextField = createRefFor("confirmPasswordTextField")
+            val registerButton = createRefFor("registerButton")
+            val bottomText = createRefFor("bottomText")
+            val loginLinkText = createRefFor("loginLinkText")
+
+            val upperGuideline = createGuidelineFromTop(0.1f)
+            val bottomGuideline = createGuidelineFromTop(0.8f)
+
+            constrain(registerTextView){
+                top.linkTo(upperGuideline)
+            }
+            constrain(fullNameTextField){
+                top.linkTo(registerTextView.bottom, margin = 25.dp)
+            }
+            constrain(emailTextField){
+                top.linkTo(fullNameTextField.bottom, margin = 25.dp)
+            }
+            constrain(passwordTextField){
+                top.linkTo(emailTextField.bottom, margin = 25.dp)
+            }
+            constrain(confirmPasswordTextField){
+                top.linkTo(passwordTextField.bottom, margin = 25.dp)
+            }
+            constrain(registerButton){
+                top.linkTo(confirmPasswordTextField.bottom, margin = 25.dp)
+            }
+            constrain(bottomText) {
+                top.linkTo(bottomGuideline)
+            }
+            constrain(loginLinkText) {
+                top.linkTo(bottomGuideline)
+            }
+
+            createHorizontalChain(
+                bottomText, loginLinkText, chainStyle = ChainStyle.Packed
+            )
+            createHorizontalChain(registerTextView)
+            createHorizontalChain(fullNameTextField)
+            createHorizontalChain(emailTextField)
+            createHorizontalChain(registerTextView)
+            createHorizontalChain(passwordTextField)
+            createHorizontalChain(confirmPasswordTextField)
+            createHorizontalChain(registerButton)
+        }
+        ConstraintLayout(
+            constraintSet = constraints,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            var emailTextFieldState by remember { mutableStateOf("") }
+            var passwordTextFieldState by remember { mutableStateOf("") }
+            var fullNameTextFieldState by remember { mutableStateOf("") }
+            var confirmPasswordTextFieldState by remember { mutableStateOf("") }
+            var passwordVisibility by remember { mutableStateOf(false) }
+            var confirmPasswordVisibility by remember { mutableStateOf(false) }
+
+            val passwordIcon = if (passwordVisibility)
+                painterResource(id = R.drawable.design_ic_visibility)
+            else
+                painterResource(id = R.drawable.design_ic_visibility_off)
+
+            val confirmPasswordIcon = if (confirmPasswordVisibility)
+                painterResource(id = R.drawable.design_ic_visibility)
+            else
+                painterResource(id = R.drawable.design_ic_visibility_off)
+
+            // CREATE ACCOUNT TEXT
+            Text(
+                modifier = Modifier.layoutId("registerTextView"),
+                text = "Create Account",
+                color = Color.Red,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            // FULL NAME TEXT FIELD
+            OutlinedTextField(
+                modifier = Modifier.layoutId("fullNameTextField"),
+                value = fullNameTextFieldState,
+                label = {
+                    Text("Full Name")
+                },
+                onValueChange = {
+                    fullNameTextFieldState = it
+                },
+                singleLine = true
+            )
+            // EMAIL TEXT FIELD
+            OutlinedTextField(
+                modifier = Modifier.layoutId("emailTextField"),
+                value = emailTextFieldState,
+                label = {
+                    Text("Email")
+                },
+                onValueChange = {
+                    emailTextFieldState = it
+                },
+                singleLine = true
+            )
+            // PASSWORD TEXT FIELD
+            OutlinedTextField(
+                modifier = Modifier.layoutId("passwordTextField"),
+                value = passwordTextFieldState,
+                label = {
+                    Text("Password")
+                },
+                onValueChange = {
+                    passwordTextFieldState = it
+                },
+                singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = {
+                        passwordVisibility = !passwordVisibility
+                    }) {
+                        Icon(
+                            painter = passwordIcon,
+                            contentDescription = "visibility Icon"
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = if (passwordVisibility) VisualTransformation.None
+                else PasswordVisualTransformation()
+            )
+            // CONFIRM PASSWORD TEXT FIELD
+            OutlinedTextField(
+                modifier = Modifier.layoutId("confirmPasswordTextField"),
+                value = confirmPasswordTextFieldState,
+                label = {
+                    Text("Confirm Password")
+                },
+                onValueChange = {
+                    confirmPasswordTextFieldState = it
+                },
+                singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = {
+                        confirmPasswordVisibility = !confirmPasswordVisibility
+                    }) {
+                        Icon(
+                            painter = confirmPasswordIcon,
+                            contentDescription = "visibility Icon"
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None
+                else PasswordVisualTransformation()
+            )
+            Button(
+                modifier = Modifier.layoutId("registerButton"),
+                onClick = {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar("Hi, This is snackBar")
+                    }
+                    registerPageValues(fullNameTextFieldState, emailTextFieldState, passwordTextFieldState, confirmPasswordTextFieldState)
+                }
+            ) {
+                Text(text = "Login")
+            }
+            Text(
+                modifier = Modifier.layoutId("bottomText"),
+                text = "Already have an account? "
+            )
+            Text(
+                modifier = Modifier
+                    .layoutId("loginLinkText")
+                    .clickable {
+                        navController.navigate(Screen.MainScreen.route)
+                        scope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("Hi, This is register")
+                        }
+                    },
+                text = " Sign in"
+            )
+        }
+    }
+}
+
+fun loginPageValues(email: String, password: String){
+    println("email: $email, password: $password")
+}
+
+fun registerPageValues(fullName: String, email: String, password: String, confirmPassword: String){
+    println("\nfull name: $fullName ,\nemail: $email, \npassword: $password, \nconfirm password: $confirmPassword")
 }
